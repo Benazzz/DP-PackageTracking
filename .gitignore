@@ -1,0 +1,65 @@
+#####################################
+#   Node / React (Frontend)         #
+#####################################
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+
+# Local env files
+*.local
+
+#####################################
+#   Visual Studio / .NET (Backend)  #
+#####################################
+
+# User-specific files
+*.user
+*.suo
+*.ntvs*
+*.njsproj
+*.psess
+*.vsp
+*.vspscc
+*_i.c
+*_p.c
+*.tmp
+*.pidb
+*.svclog
+
+# Build results
+bin/
+obj/
+Debug/
+Release/
+
+# Visual Studio
+.vs/
+
+# Rider / JetBrains
+.idea/
+
+#####################################
+#   Common                          #
+#####################################
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# VSCode settings (except extensions.json for team configs)
+.vscode/*
+!.vscode/extensions.json
