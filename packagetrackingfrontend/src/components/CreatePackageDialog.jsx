@@ -1,7 +1,8 @@
 import { useState } from "react";
-import api from "../helpers/api";
+import { createPackage } from "../helpers/packageApi";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function CreatePackageDialog({onClose, onCreated}) {
+function CreatePackageDialog({ onClose, onCreated }) {
   const [senderName, setSenderName] = useState("");
   const [senderPhone, setSenderPhone] = useState("");
   const [senderAddress, setSenderAddress] = useState("");
@@ -17,50 +18,117 @@ function CreatePackageDialog({onClose, onCreated}) {
     setError("");
 
     try {
-        const object = {
-            senderName,
-            senderPhone,
-            senderAddress,
-            recipientName,
-            recipientPhone,
-            recipientAddress,
-        };
+      const object = {
+        senderName,
+        senderPhone,
+        senderAddress,
+        recipientName,
+        recipientPhone,
+        recipientAddress,
+      };
 
-        const response = await api.post("/Packages", object);
-        onCreated(response.data);
-        onClose();
-    }
-    catch {
-        console.error(err);
-        setError("Failed to create package");
-    }
-    finally {
-        setLoading(false);
+      const data = await createPackage(object);
+      onCreated(data);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      setError("Failed to create package");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="dialog">
-      <h2>Create Package</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <h3>Sender</h3>
-        <input placeholder="Name" value={senderName} onChange={(e) => setSenderName(e.target.value)} required />
-        <input placeholder="Phone" value={senderPhone} onChange={(e) => setSenderPhone(e.target.value)} required />
-        <input placeholder="Address" value={senderAddress} onChange={(e) => setSenderAddress(e.target.value)} required />
+    <div
+      className="position-fixed top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center"
+      style={{ backgroundColor: "rgba(0,0,0,0.5)", zIndex: 1050 }}
+    >
+      <div
+        className="card p-4 shadow"
+        style={{ maxWidth: "500px", width: "95%" }}
+      >
+        <h3 className="card-title mb-3">Create Package</h3>
 
-        <h3>Recipient</h3>
-        <input placeholder="Name" value={recipientName} onChange={(e) => setRecipientName(e.target.value)} required />
-        <input placeholder="Phone" value={recipientPhone} onChange={(e) => setRecipientPhone(e.target.value)} required />
-        <input placeholder="Address" value={recipientAddress} onChange={(e) => setRecipientAddress(e.target.value)} required />
+        {error && <div className="alert alert-danger">{error}</div>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating..." : "Create Package"}
-        </button>
-        <button type="button" onClick={onClose}>Cancel</button>
-      </form>
+        <form onSubmit={handleSubmit}>
+          <h5>Sender</h5>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Name"
+              value={senderName}
+              onChange={(e) => setSenderName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Phone"
+              value={senderPhone}
+              onChange={(e) => setSenderPhone(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Address"
+              value={senderAddress}
+              onChange={(e) => setSenderAddress(e.target.value)}
+              required
+            />
+          </div>
+
+          <h5>Recipient</h5>
+          <div className="mb-3">
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Name"
+              value={recipientName}
+              onChange={(e) => setRecipientName(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              className="form-control mb-2"
+              placeholder="Phone"
+              value={recipientPhone}
+              onChange={(e) => setRecipientPhone(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Address"
+              value={recipientAddress}
+              onChange={(e) => setRecipientAddress(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="d-flex justify-content-end">
+            <button
+              type="button"
+              className="btn btn-secondary me-2"
+              onClick={onClose}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
+              {loading ? "Creating..." : "Create Package"}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  );  
+  );
 }
 
 export default CreatePackageDialog;
